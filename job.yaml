@@ -1,0 +1,24 @@
+apiVersion: flink.apache.org/v1beta1
+kind: FlinkDeployment
+metadata:
+  name: sql-example
+  namespace: default
+spec:
+  image: flink-sql-runner:latest
+  flinkVersion: v1_16
+  flinkConfiguration:
+    taskmanager.numberOfTaskSlots: "1"
+  serviceAccount: flink
+  jobManager:
+    resource:
+      memory: "2048m"
+      cpu: 1
+  taskManager:
+    resource:
+      memory: "2048m"
+      cpu: 1
+  job:
+    jarURI: local:///opt/flink/usrlib/flink-sql-runner.jar
+    args: ["/opt/flink/usrlib/sql-scripts/script.sql"]
+    parallelism: 1
+    upgradeMode: stateless
